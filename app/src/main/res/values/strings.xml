@@ -9,6 +9,10 @@
     <string name="contact_us">Contact US</string>
     <string name="watch_trailer_1">Play</string>
     <string name="watch_trailer_2">FREE</string>
+    <string name="title_index_show">name</string>
+    <string name="position">position</string>
+    <string name="duration">position</string>
+
     <string name="movie">Movie</string>
 
     <!-- Error messages -->

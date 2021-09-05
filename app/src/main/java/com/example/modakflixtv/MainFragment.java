@@ -82,8 +82,8 @@ public class MainFragment extends BrowseSupportFragment {
     }
 
     private void loadRows() {
-        List<Movie> moviesList = MovieList.setupMovies(MiscOperations.get_movies_list);
-        List<Movie> resumeList = MovieList.setupMovies(MiscOperations.get_shows_watched_path);
+        List<Movie> moviesList = MovieList.setupMovies(MiscOperations.get_movies_list, MiscOperations.title_index_show);
+        List<Movie> resumeList = MovieList.setupMovies(MiscOperations.get_shows_watched_path, MiscOperations.position);
 
         Collections.shuffle(moviesList);
 
@@ -98,7 +98,6 @@ public class MainFragment extends BrowseSupportFragment {
             ArrayObjectAdapter listRowAdapterResume = new ArrayObjectAdapter(cardPresenter);
             for (int j = 0; j < resumeList.size(); j++) {
                 listRowAdapterResume.add(resumeList.get(j));
-
             }
             HeaderItem headerResume = new HeaderItem(0, MovieList.MOVIE_CATEGORY[0]);
             rowsAdapter.add(new ListRow(headerResume, listRowAdapterResume));

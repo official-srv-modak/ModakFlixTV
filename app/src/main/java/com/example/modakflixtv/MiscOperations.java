@@ -10,6 +10,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
@@ -17,6 +18,8 @@ import java.util.Set;
 public class MiscOperations {
 
     public static String ip = "modakflix.com", ipInfoFilePath = "";
+
+    public static String position = "position", duration = "duration", title_index_show = "name";
 
     public static String domain_name = "http://"+ip+"/";
     public static String record_position_path = domain_name+"record_position.php";
@@ -107,5 +110,19 @@ public class MiscOperations {
         else
             return URL;
 
+    }
+    public static ArrayList<Integer> getClockValues(int timeInMill)
+    {
+        int rem = timeInMill;
+        rem /= 1000;
+        int secs = rem%60;
+        int mins = rem/60;
+        int hrs = mins/60;
+        mins = mins%60;
+        ArrayList<Integer> output = new ArrayList<>();
+        output.add(hrs);
+        output.add(mins);
+        output.add(secs);
+        return output;
     }
 }

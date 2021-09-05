@@ -6,6 +6,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,17 +22,16 @@ public final class MovieList {
 
     public static List<Movie> getList() {
         if (list == null) {
-            list = setupMovies(MiscOperations.get_movies_list);
+            list = setupMovies(MiscOperations.get_movies_list, "name");
         }
         return list;
     }
 
-    public static List<Movie> setupMovies(String url) {
+    public static List<Movie> setupMovies(String url, String titleIndex) {
         list = new ArrayList<>();
 
         JSONObject showJSONList = MiscOperations.getDataFromServer(url);
-
-        String title[] = getListsFromJSONObject(showJSONList, "name");
+        String title[] = getListsFromJSONObject(showJSONList, titleIndex);
         NUM_COLS = title.length;
 
         String description[] = getListsFromJSONObject(showJSONList, "des");;
@@ -50,6 +50,8 @@ public final class MovieList {
         }
 
         return list;
+
+
     }
 
     private static Movie buildMovieInfo(
@@ -77,7 +79,23 @@ public final class MovieList {
             for(int i = 0; i < cards.length(); i++)
             {
                 JSONObject temp = (JSONObject) cards.get(i);
-                output[i] = temp.getString(index);
+
+                if(index.equals(MiscOperations.position))
+                {
+                    int pos = temp.getInt(MiscOperations.position);
+                    int dur = temp.getInt(MiscOperations.duration);
+                    int rem = dur - pos;
+                    String tmpStr = "Resume ";
+
+                    ArrayList<Integer> clockList = MiscOperations.getClockValues(rem);
+                    tmpStr += clockList.get(0)+" Hrs "+clockList.get(1)+" min remaining - ";
+
+                    tmpStr += temp.getString(MiscOperations.title_index_show);
+
+                    output[i] = tmpStr;
+                }
+                else
+                    output[i] = temp.getString(index);
             }
             return output;
         } catch (JSONException e) {
