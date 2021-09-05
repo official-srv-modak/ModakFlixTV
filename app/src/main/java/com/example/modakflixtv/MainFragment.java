@@ -72,7 +72,8 @@ public class MainFragment extends BrowseSupportFragment {
         if(resumeFlag)
         {
             resumeFlag = false;
-            startUI();
+            LoadCard ld = new LoadCard();
+            ld.execute();
         }
     }
 
@@ -107,7 +108,6 @@ public class MainFragment extends BrowseSupportFragment {
         CardPresenter cardPresenter = new CardPresenter();
 
         // Resume
-        Collections.shuffle(resumeList);
 
         if(resumeList.size() > 0)
         {

@@ -88,7 +88,7 @@ public final class MovieList {
                     String tmpStr = "Resume ";
 
                     ArrayList<Integer> clockList = MiscOperations.getClockValues(rem);
-                    tmpStr += clockList.get(0)+" Hrs "+clockList.get(1)+" min remaining - ";
+                    tmpStr += clockList.get(0)+" Hr "+clockList.get(1)+" min remaining - ";
 
                     tmpStr += temp.getString(MiscOperations.title_index_show);
 

@@ -140,11 +140,24 @@ public class VideoDetailsFragment extends DetailsSupportFragment {
 
         ArrayObjectAdapter actionAdapter = new ArrayObjectAdapter();
 
-        actionAdapter.add(
-                new Action(
-                        ACTION_WATCH_TRAILER,
-                        getResources().getString(R.string.watch_trailer_1),
-                        getResources().getString(R.string.watch_trailer_2)));
+        String title = mSelectedMovie.getTitle();
+
+        if(title.contains("Resume") && title.contains("Hr") && title.contains("min"))
+        {
+            actionAdapter.add(
+                    new Action(
+                            ACTION_WATCH_TRAILER,
+                            getResources().getString(R.string.resume)
+                    ));
+            row.setActionsAdapter(actionAdapter);
+        }
+        else
+        {
+            actionAdapter.add(
+                    new Action(
+                            ACTION_WATCH_TRAILER,
+                            getResources().getString(R.string.play)
+                    ));
         /*actionAdapter.add(
                 new Action(
                         ACTION_RENT,
@@ -155,7 +168,9 @@ public class VideoDetailsFragment extends DetailsSupportFragment {
                         ACTION_BUY,
                         getResources().getString(R.string.buy_1),
                         getResources().getString(R.string.buy_2)));*/
-        row.setActionsAdapter(actionAdapter);
+            row.setActionsAdapter(actionAdapter);
+        }
+
 
         mAdapter.add(row);
     }
