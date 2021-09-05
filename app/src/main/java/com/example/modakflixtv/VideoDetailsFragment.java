@@ -63,7 +63,10 @@ public class VideoDetailsFragment extends DetailsSupportFragment {
     private static final int NUM_COLS = 10;
 
     static  int durFromMx=0, posFromMx=0;
-    static String username = "Sourav Modak";
+
+    static boolean resumeFlag = false;
+
+    static String username = "Sourav Modak", title = "";
 
     private Movie mSelectedMovie;
 
@@ -79,13 +82,38 @@ public class VideoDetailsFragment extends DetailsSupportFragment {
 
         mDetailsBackground = new DetailsSupportFragmentBackgroundController(this);
 
+
         mSelectedMovie =
                 (Movie) getActivity().getIntent().getSerializableExtra(DetailsActivity.MOVIE);
+        if(mSelectedMovie.getTitle().contains("-"))
+        {
+            title = mSelectedMovie.getTitle().split("-")[1].trim();
+            posFromMx = mSelectedMovie.getResumePos();
+            durFromMx = mSelectedMovie.getDuration();
+        }
+        else
+            title = mSelectedMovie.getTitle();
+
         intialiseUI();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(resumeFlag)
+        {
+            intialiseUI();
+            resumeFlag = false;
+        }
+
     }
 
     private void intialiseUI()
     {
+        if(resumeFlag)
+        {
+            mSelectedMovie.setTitle(MiscOperations.resumeString(posFromMx, durFromMx, title));
+        }
         if (mSelectedMovie != null) {
             mPresenterSelector = new ClassPresenterSelector();
             mAdapter = new ArrayObjectAdapter(mPresenterSelector);
@@ -197,7 +225,11 @@ public class VideoDetailsFragment extends DetailsSupportFragment {
                     /*Intent intent = new Intent(getActivity(), PlaybackActivity.class);
                     intent.putExtra(DetailsActivity.MOVIE, mSelectedMovie);
                     startActivity(intent);*/
-                    startMxPlayer(mSelectedMovie.getVideoUrl(), "1000");
+                    int pos = mSelectedMovie.getResumePos();
+                    if(pos >= 60000)
+                        startMxPlayer(mSelectedMovie.getVideoUrl(), pos);
+                    else
+                        startMxPlayer(mSelectedMovie.getVideoUrl(), 1000);
                 } else {
                     Toast.makeText(getActivity(), action.toString(), Toast.LENGTH_SHORT).show();
                 }
@@ -206,16 +238,18 @@ public class VideoDetailsFragment extends DetailsSupportFragment {
         mPresenterSelector.addClassPresenter(DetailsOverviewRow.class, detailsPresenter);
     }
 
-    private void startMxPlayer(String videoUrl, String pos1)
+    private void startMxPlayer(String videoUrl, int pos1)
     {
         String appPackageName = "com.mxtech.videoplayer.ad";
         try {
-
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setPackage("com.mxtech.videoplayer.ad");
             intent.setClassName("com.mxtech.videoplayer.ad", "com.mxtech.videoplayer.ad.ActivityScreen");
             Uri videoUri = Uri.parse(videoUrl);
             intent.setDataAndType(videoUri, "application/x-mpegURL");
+
+
+            //intent.putExtra("position", 0000);
             intent.setPackage("com.mxtech.videoplayer.ad"); // com.mxtech.videoplayer.pro
             intent.putExtra("position", pos1);
             byte decoder = 2;
@@ -327,6 +361,9 @@ public class VideoDetailsFragment extends DetailsSupportFragment {
         String name = "";
         durFromMx = dur;
         posFromMx = pos;
+        mSelectedMovie.setDuration(durFromMx);
+        mSelectedMovie.setResumePos(posFromMx);
+        resumeFlag = true;
         if(pos != -1 && dur != -1)
         {
             try {

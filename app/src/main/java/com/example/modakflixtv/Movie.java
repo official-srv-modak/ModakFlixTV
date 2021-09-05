@@ -14,6 +14,23 @@ public class Movie implements Serializable {
     private String cardImageUrl;
     private String videoUrl;
     private String studio;
+    private int resumePos, duration;
+
+    public int getResumePos() {
+        return resumePos;
+    }
+
+    public void setResumePos(int resumePos) {
+        this.resumePos = resumePos;
+    }
+
+    public int getDuration() {
+        return duration;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
 
     public Movie() {
     }

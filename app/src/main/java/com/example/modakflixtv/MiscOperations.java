@@ -2,6 +2,7 @@ package com.example.modakflixtv;
 
 import android.util.Log;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -163,5 +164,32 @@ public class MiscOperations {
             e.printStackTrace();
             return null;
         }
+    }
+    public static String resumeString(int pos, int dur, String title)
+    {
+        String output = "";
+        try {
+            int rem = dur - pos;
+            String tmpStr = "Resume ";
+
+            ArrayList<Integer> clockList = MiscOperations.getClockValues(rem);
+            int hrInt = clockList.get(0);
+            if(hrInt > 0)
+                tmpStr += clockList.get(0)+" Hr ";
+            int minInt = clockList.get(1);
+
+            if(minInt > 0)
+                tmpStr += clockList.get(1)+" min ";
+
+            tmpStr += "remaining - ";
+
+            tmpStr += title;
+
+            output = tmpStr;
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        return output;
     }
 }

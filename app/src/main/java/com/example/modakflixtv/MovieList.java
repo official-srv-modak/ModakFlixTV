@@ -84,23 +84,8 @@ public final class MovieList {
                 {
                     int pos = temp.getInt(MiscOperations.position);
                     int dur = temp.getInt(MiscOperations.duration);
-                    int rem = dur - pos;
-                    String tmpStr = "Resume ";
-
-                    ArrayList<Integer> clockList = MiscOperations.getClockValues(rem);
-                    int hrInt = clockList.get(0);
-                    if(hrInt > 0)
-                        tmpStr += clockList.get(0)+" Hr ";
-                    int minInt = clockList.get(1);
-
-                    if(minInt > 0)
-                        tmpStr += clockList.get(1)+" min ";
-
-                    tmpStr += "remaining - ";
-
-                    tmpStr += temp.getString(MiscOperations.title_index_show);
-
-                    output[i] = tmpStr;
+                    String title = temp.getString(MiscOperations.title_index_show);
+                    output[i] = MiscOperations.resumeString(pos, dur, title);
                 }
                 else
                     output[i] = temp.getString(index);

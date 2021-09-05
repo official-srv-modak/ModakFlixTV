@@ -197,7 +197,10 @@ public class SearchFragment extends Fragment {
                                         movie.setBackgroundImageUrl(album_art_path);
                                         movie.setCardImageUrl(album_art_path);
                                         movie.setTitle(name.toString());
+
                                         try {
+                                            movie.setResumePos(Integer.parseInt(card.getString("position")));
+                                            movie.setDuration(Integer.parseInt(card.getString("duration")));
                                             movie.setVideoUrl(card.getString("url").toString());
                                             movie.setDescription(card.getString("des"));
                                         } catch (JSONException e) {
