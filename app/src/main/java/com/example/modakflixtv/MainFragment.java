@@ -90,7 +90,21 @@ public class MainFragment extends BrowseSupportFragment {
         ArrayObjectAdapter rowsAdapter = new ArrayObjectAdapter(new ListRowPresenter());
         CardPresenter cardPresenter = new CardPresenter();
 
+        // Resume
+        Collections.shuffle(resumeList);
 
+        if(resumeList.size() > 0)
+        {
+            ArrayObjectAdapter listRowAdapterResume = new ArrayObjectAdapter(cardPresenter);
+            for (int j = 0; j < resumeList.size(); j++) {
+                listRowAdapterResume.add(resumeList.get(j));
+
+            }
+            HeaderItem headerResume = new HeaderItem(0, MovieList.MOVIE_CATEGORY[0]);
+            rowsAdapter.add(new ListRow(headerResume, listRowAdapterResume));
+        }
+
+        // Movies
         Collections.shuffle(moviesList);
 
         ArrayObjectAdapter listRowAdapter = new ArrayObjectAdapter(cardPresenter);
