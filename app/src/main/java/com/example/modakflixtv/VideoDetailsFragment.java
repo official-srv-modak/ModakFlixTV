@@ -1,8 +1,13 @@
 package com.example.modakflixtv;
 
+import static android.app.Activity.RESULT_OK;
+
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.graphics.drawable.Drawable;
 
@@ -29,12 +34,15 @@ import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.content.ContextCompat;
 
 import android.util.Log;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.Collections;
 import java.util.List;
 
@@ -54,6 +62,9 @@ public class VideoDetailsFragment extends DetailsSupportFragment {
 
     private static final int NUM_COLS = 10;
 
+    static  int durFromMx=0, posFromMx=0;
+    static String username = "Sourav Modak";
+
     private Movie mSelectedMovie;
 
     private ArrayObjectAdapter mAdapter;
@@ -70,6 +81,11 @@ public class VideoDetailsFragment extends DetailsSupportFragment {
 
         mSelectedMovie =
                 (Movie) getActivity().getIntent().getSerializableExtra(DetailsActivity.MOVIE);
+        intialiseUI();
+    }
+
+    private void intialiseUI()
+    {
         if (mSelectedMovie != null) {
             mPresenterSelector = new ClassPresenterSelector();
             mAdapter = new ArrayObjectAdapter(mPresenterSelector);
@@ -84,7 +100,6 @@ public class VideoDetailsFragment extends DetailsSupportFragment {
             startActivity(intent);
         }
     }
-
     private void initializeBackground(Movie data) {
         mDetailsBackground.enableParallax();
         Glide.with(getActivity())
@@ -164,15 +179,60 @@ public class VideoDetailsFragment extends DetailsSupportFragment {
             @Override
             public void onActionClicked(Action action) {
                 if (action.getId() == ACTION_WATCH_TRAILER) {
-                    Intent intent = new Intent(getActivity(), PlaybackActivity.class);
+                    /*Intent intent = new Intent(getActivity(), PlaybackActivity.class);
                     intent.putExtra(DetailsActivity.MOVIE, mSelectedMovie);
-                    startActivity(intent);
+                    startActivity(intent);*/
+                    startMxPlayer(mSelectedMovie.getVideoUrl(), "1000");
                 } else {
                     Toast.makeText(getActivity(), action.toString(), Toast.LENGTH_SHORT).show();
                 }
             }
         });
         mPresenterSelector.addClassPresenter(DetailsOverviewRow.class, detailsPresenter);
+    }
+
+    private void startMxPlayer(String videoUrl, String pos1)
+    {
+        String appPackageName = "com.mxtech.videoplayer.ad";
+        try {
+
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setPackage("com.mxtech.videoplayer.ad");
+            intent.setClassName("com.mxtech.videoplayer.ad", "com.mxtech.videoplayer.ad.ActivityScreen");
+            Uri videoUri = Uri.parse(videoUrl);
+            intent.setDataAndType(videoUri, "application/x-mpegURL");
+            intent.setPackage("com.mxtech.videoplayer.ad"); // com.mxtech.videoplayer.pro
+            intent.putExtra("position", pos1);
+            byte decoder = 2;
+            //intent.putExtra("decode_mode", decoder);
+            intent.putExtra("fast_mode", true);
+            intent.putExtra("return_result", true);
+            startActivityForResult(intent, 1);
+
+        } catch (ActivityNotFoundException e) {
+            Toast.makeText(getActivity(), "MX Player not installed. Install MX Player" , Toast.LENGTH_LONG).show();
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK)  // -1 RESULT_OK : Playback was completed or stopped by user request.
+        {
+            //Activity.RESULT_CANCELED: User canceled before starting any playback.
+            //RESULT_ERROR (=Activity.RESULT_FIRST_USER): Last playback was ended with an error.
+
+            if (data.getAction().equals("com.mxtech.intent.result.VIEW")) {
+                //data.getData()
+                PostProcess p = new PostProcess();
+                p.execute(data);
+            } else if (data.getAction().equals("modakflix_player_current_pos")) {
+                //data.getData()
+                PostProcess p = new PostProcess();
+                p.execute(data);
+            }
+        }
     }
 
     private void setupRelatedMovieListRow() {
@@ -216,6 +276,79 @@ public class VideoDetailsFragment extends DetailsSupportFragment {
                                 .toBundle();
                 getActivity().startActivity(intent, bundle);
             }
+        }
+    }
+
+    private class PostProcess extends AsyncTask<Intent, Void, Integer> {
+        protected Integer doInBackground(Intent... data) {
+            doPostProcess(data[0]);
+
+            return 0;
+        }
+
+        /*ProgressDialog progressDialog = new ProgressDialog(Description.this);
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            progressDialog.setMessage("Loading...");
+            progressDialog.setIndeterminate(false);
+            progressDialog.setCancelable(true);
+            progressDialog.show();
+        }
+
+        @Override
+        protected void onPostExecute(Integer integer) {
+            super.onPostExecute(integer);
+            progressDialog.dismiss();
+        }*/
+    }
+    private void doPostProcess(Intent data)
+    {
+        int pos = data.getIntExtra("position", -1); // Last playback position in milliseconds. This extra will not exist if playback is completed.
+        int dur = data.getIntExtra("duration", -1); // Duration of last played video in milliseconds. This extra will not exist if playback is completed.
+        String cause = data.getStringExtra("end_by"); //  Indicates reason of activity closure.
+        Uri uri = data.getData();
+        String name = "";
+        durFromMx = dur;
+        posFromMx = pos;
+        if(pos != -1 && dur != -1)
+        {
+            try {
+                name = URLDecoder.decode(uri.toString().split("/")[uri.toString().split("/").length - 2], "UTF-8");
+
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+            try {
+                double rem = 0;
+                rem = dur - pos;
+                rem = (rem/dur)*100;
+                if (rem >= 5)
+                {
+                    MiscOperations.pingDataServer(MiscOperations.record_position_path+"?username="+username+"&show="+ URLDecoder.decode(uri.toString(), "UTF-8")+"&pos="+pos+"&duration="+dur+"&cause="+cause+"&name="+name);
+                }
+
+                else
+                    MiscOperations.pingDataServer(MiscOperations.delete_position_path+"?username="+username+"&show="+name);
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+            MainFragment.resumeFlag = true;
+            /*Button openWith = getActivity().findViewById(R.id.playWithBtn);
+            int rem = dur - pos;
+            rem /= 1000;
+            int mins = rem/60;
+            int hrs = mins/60;
+            if(hrs > 0)
+            {
+                mins = mins%60;
+                openWith.setText("Resume "+hrs+" hour "+mins+" min(s) left");
+            }
+            else
+            {
+                openWith.setText("Resume "+mins+" min(s) left");
+            }*/
         }
     }
 }

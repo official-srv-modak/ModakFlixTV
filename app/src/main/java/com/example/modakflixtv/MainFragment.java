@@ -56,12 +56,28 @@ public class MainFragment extends BrowseSupportFragment {
     private Timer mBackgroundTimer;
     private String mBackgroundUri;
     private BackgroundManager mBackgroundManager;
+    public static boolean resumeFlag = false;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         Log.i(TAG, "onCreate");
         super.onActivityCreated(savedInstanceState);
 
+        startUI();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(resumeFlag)
+        {
+            resumeFlag = false;
+            startUI();
+        }
+    }
+
+    private void startUI()
+    {
         prepareBackgroundManager();
 
         setupUIElements();
