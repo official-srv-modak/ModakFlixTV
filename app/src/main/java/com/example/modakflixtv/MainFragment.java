@@ -178,8 +178,8 @@ public class MainFragment extends BrowseSupportFragment {
 
             @Override
             public void onClick(View view) {
-                Toast.makeText(getActivity(), "Implement your own in-app search", Toast.LENGTH_LONG)
-                        .show();
+                Intent searchAct = new Intent(getActivity(), SearchActivity.class);
+                startActivity(searchAct);
             }
         });
 
