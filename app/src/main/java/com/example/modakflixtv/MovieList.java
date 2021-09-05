@@ -11,7 +11,9 @@ import java.util.List;
 
 public final class MovieList {
     public static final String MOVIE_CATEGORY[] = {
+            "Resume watching",
             "Movies",
+            "TV Shows",
     };
 
     private static List<Movie> list;
@@ -19,15 +21,15 @@ public final class MovieList {
 
     public static List<Movie> getList() {
         if (list == null) {
-            list = setupMovies();
+            list = setupMovies(MiscOperations.get_movies_list);
         }
         return list;
     }
 
-    public static List<Movie> setupMovies() {
+    public static List<Movie> setupMovies(String url) {
         list = new ArrayList<>();
 
-        JSONObject showJSONList = MiscOperations.getDataFromServer(MiscOperations.get_movies_list);
+        JSONObject showJSONList = MiscOperations.getDataFromServer(url);
 
         String title[] = getListsFromJSONObject(showJSONList, "name");
         NUM_COLS = title.length;

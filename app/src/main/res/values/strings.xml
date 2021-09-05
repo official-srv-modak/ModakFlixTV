@@ -2,10 +2,11 @@
     <string name="app_name">ModakFlixTV</string>
     <string name="browse_title">ModakFlix</string>
     <string name="related_movies">Related Videos</string>
-    <string name="grid_view">Grid View</string>
-    <string name="comming_soon">Comming Soon</string>
-    <string name="error_fragment">Error Fragment</string>
-    <string name="personal_settings">Personal Settings</string>
+    <string name="profiles">Profiles</string>
+    <string name="error_fragment">Error fragment</string>
+    <string name="coming_soon">Coming Soon</string>
+    <string name="reset_profile">Reset Profile</string>
+    <string name="contact_us">Contact US</string>
     <string name="watch_trailer_1">Play</string>
     <string name="watch_trailer_2">FREE</string>
     <string name="movie">Movie</string>

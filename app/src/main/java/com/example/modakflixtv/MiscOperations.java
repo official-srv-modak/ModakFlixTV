@@ -21,7 +21,7 @@ public class MiscOperations {
     public static String domain_name = "http://"+ip+"/";
     public static String record_position_path = domain_name+"record_position.php";
     public static String delete_position_path = domain_name+"delete_from_shows_watched.php";
-    public static String get_shows_watched_path = domain_name+"get_shows_watched.php?username=admin";
+    public static String get_shows_watched_path = domain_name+"get_shows_watched.php?username=Sourav Modak";
     public static String reset_profile = domain_name+"reset_profile.php?username=admin";
     public static String get_movies_list = domain_name+"get_movies_list_json.php";
     public static String reload_shows_watched = domain_name+"reload_shows_watched.php";

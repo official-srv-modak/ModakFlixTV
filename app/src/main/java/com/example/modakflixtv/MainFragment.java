@@ -47,7 +47,7 @@ public class MainFragment extends BrowseSupportFragment {
     private static final int BACKGROUND_UPDATE_DELAY = 300;
     private static final int GRID_ITEM_WIDTH = 200;
     private static final int GRID_ITEM_HEIGHT = 200;
-    private static final int NUM_ROWS = 1;
+    private static final int NUM_ROWS = 2;
     public static int NUM_COLS = 15;
 
     private final Handler mHandler = new Handler();
@@ -82,29 +82,32 @@ public class MainFragment extends BrowseSupportFragment {
     }
 
     private void loadRows() {
-        List<Movie> list = MovieList.setupMovies();
+        List<Movie> moviesList = MovieList.setupMovies(MiscOperations.get_movies_list);
+        List<Movie> resumeList = MovieList.setupMovies(MiscOperations.get_shows_watched_path);
+
+        Collections.shuffle(moviesList);
 
         ArrayObjectAdapter rowsAdapter = new ArrayObjectAdapter(new ListRowPresenter());
         CardPresenter cardPresenter = new CardPresenter();
 
-        int i;
-        for (i = 0; i < NUM_ROWS; i++) {
-            if (i != 0) {
-                Collections.shuffle(list);
-            }
-            ArrayObjectAdapter listRowAdapter = new ArrayObjectAdapter(cardPresenter);
-            for (int j = 0; j < NUM_COLS; j++) {
-                listRowAdapter.add(list.get(j));
-            }
-            HeaderItem header = new HeaderItem(i, MovieList.MOVIE_CATEGORY[i]);
-            rowsAdapter.add(new ListRow(header, listRowAdapter));
-        }
 
-        HeaderItem gridHeader = new HeaderItem(i, "TV Shows");
+        Collections.shuffle(moviesList);
+
+        ArrayObjectAdapter listRowAdapter = new ArrayObjectAdapter(cardPresenter);
+        for (int j = 0; j < moviesList.size(); j++) {
+            listRowAdapter.add(moviesList.get(j));
+
+        }
+        HeaderItem header = new HeaderItem(1, MovieList.MOVIE_CATEGORY[1]);
+        rowsAdapter.add(new ListRow(header, listRowAdapter));
+
+
+        //TV Shows
+        HeaderItem gridHeader = new HeaderItem(2, "TV Shows");
 
         GridItemPresenter mGridPresenter = new GridItemPresenter();
         ArrayObjectAdapter gridRowAdapter = new ArrayObjectAdapter(mGridPresenter);
-        gridRowAdapter.add(getResources().getString(R.string.comming_soon));
+        gridRowAdapter.add(getResources().getString(R.string.coming_soon));
         rowsAdapter.add(new ListRow(gridHeader, gridRowAdapter));
 
         getActivity().runOnUiThread(new Runnable() {
@@ -114,13 +117,14 @@ public class MainFragment extends BrowseSupportFragment {
             }
         });
 
-        HeaderItem gridHeader1 = new HeaderItem(i, "PREFERENCES");
+        // Menu
+        HeaderItem gridHeader1 = new HeaderItem(2, "Menu");
 
         GridItemPresenter mGridPresenter1 = new GridItemPresenter();
         ArrayObjectAdapter gridRowAdapter1 = new ArrayObjectAdapter(mGridPresenter1);
-        gridRowAdapter1.add(getResources().getString(R.string.grid_view));
-        gridRowAdapter1.add(getString(R.string.error_fragment));
-        gridRowAdapter1.add(getResources().getString(R.string.personal_settings));
+        gridRowAdapter1.add(getResources().getString(R.string.profiles));
+        gridRowAdapter1.add(getString(R.string.reset_profile));
+        gridRowAdapter1.add(getResources().getString(R.string.contact_us));
         rowsAdapter.add(new ListRow(gridHeader1, gridRowAdapter1));
 
         getActivity().runOnUiThread(new Runnable() {
