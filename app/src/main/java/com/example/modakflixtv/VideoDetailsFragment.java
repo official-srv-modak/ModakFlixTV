@@ -142,7 +142,7 @@ public class VideoDetailsFragment extends DetailsSupportFragment {
 
         String title = mSelectedMovie.getTitle();
 
-        if(title.contains("Resume") && title.contains("Hr") && title.contains("min"))
+        if(title.contains("Resume") && (title.contains("Hr") || title.contains("min")))
         {
             actionAdapter.add(
                     new Action(
