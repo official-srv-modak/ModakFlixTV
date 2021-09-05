@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentActivity;
 public class DetailsActivity extends FragmentActivity {
     public static final String SHARED_ELEMENT_NAME = "hero";
     public static final String MOVIE = "Movie";
+    public static String title, description;
 
     /**
      * Called when the activity is first created.
@@ -22,6 +23,12 @@ public class DetailsActivity extends FragmentActivity {
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.details_fragment, new VideoDetailsFragment())
                     .commitNow();
+        }
+
+        if(getIntent().hasExtra("title") && getIntent().hasExtra("description"))
+        {
+            title = getIntent().getStringExtra("title");
+            description = getIntent().getStringExtra("description");
         }
     }
 

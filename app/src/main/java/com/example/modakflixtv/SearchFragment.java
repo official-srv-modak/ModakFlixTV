@@ -8,10 +8,17 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityOptionsCompat;
 import androidx.fragment.app.Fragment;
+import androidx.leanback.widget.ImageCardView;
+import androidx.leanback.widget.OnItemViewClickedListener;
+import androidx.leanback.widget.Presenter;
+import androidx.leanback.widget.Row;
+import androidx.leanback.widget.RowPresenter;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +26,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -155,6 +163,21 @@ public class SearchFragment extends Fragment {
                                 view.setId(uniqueId);
                                 idList.add(uniqueId);
 
+                                view.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                                    @SuppressLint("UseCompatLoadingForDrawables")
+                                    @Override
+                                    public void onFocusChange(View view, boolean b) {
+                                        if(view.getBackground()==null)
+                                        {
+                                            view.setBackground(getResources().getDrawable(R.drawable.block_white));
+                                        }
+                                        else
+                                        {
+                                            view.setBackground(null);
+                                        }
+                                    }
+                                });
+
                                 ImageView imageView = (ImageView) view.findViewById(R.id.image);
                                 String album_art_path = card.getString("album_art_path");
                                 if(!album_art_path.isEmpty())
@@ -165,21 +188,22 @@ public class SearchFragment extends Fragment {
                                 if(!name.toString().isEmpty())
                                     tv.setText(name);
 
+
                                 view.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
-                                        /*Intent intent = new Intent(getActivity(), Description.class);
-                                        intent.putExtra("description", card.toString());
-                                        intent.putExtra("username", username);
-                                        //intent.putExtra("url", get_shows_watched_path);
-                                        int pos = 0;
-                                        String resumeFlag = "0";
-                                        if(card.has("position"))
-                                            resumeFlag = "1";
-                                        else
-                                            resumeFlag = "0";
-                                        intent.putExtra("resumeFlag", resumeFlag);
-                                        SearchActivity.this.startActivityForResult(intent, 1);*/
+
+                                        Movie movie = new Movie();
+                                        movie.setBackgroundImageUrl(album_art_path);
+                                        movie.setCardImageUrl(album_art_path);
+                                        movie.setTitle(name.toString());
+                                        try {
+                                            movie.setVideoUrl(card.getString("url").toString());
+                                            movie.setDescription(card.getString("des"));
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                        searchElementClick(movie, imageView);
                                     }
                                 });
 
@@ -207,6 +231,48 @@ public class SearchFragment extends Fragment {
         protected void onPreExecute() {
             super.onPreExecute();
 
+        }
+
+        private void searchElementClick(Movie movie, ImageView imageView)
+        {
+            Intent detailsIntent = new Intent(getActivity(), DetailsActivity.class);
+            detailsIntent.putExtra(DetailsActivity.MOVIE, movie);
+
+            Bundle bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                    getActivity(),
+                    imageView,
+                    DetailsActivity.SHARED_ELEMENT_NAME)
+                    .toBundle();
+            getActivity().startActivity(detailsIntent, bundle);
+        }
+
+        private final class ItemViewClickedListener implements OnItemViewClickedListener {
+
+            @Override
+            public void onItemClicked(Presenter.ViewHolder itemViewHolder, Object item,
+                                      RowPresenter.ViewHolder rowViewHolder, Row row) {
+
+                if (item instanceof Movie) {
+                    Movie movie = (Movie) item;
+                    Log.d("Search Item", "Item: " + item.toString());
+                    Intent intent = new Intent(getActivity(), DetailsActivity.class);
+                    intent.putExtra(DetailsActivity.MOVIE, movie);
+
+                    Bundle bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                            getActivity(),
+                            ((ImageCardView) itemViewHolder.view).getMainImageView(),
+                            DetailsActivity.SHARED_ELEMENT_NAME)
+                            .toBundle();
+                    getActivity().startActivity(intent, bundle);
+                } else if (item instanceof String) {
+                    if (((String) item).contains(getString(R.string.error_fragment))) {
+                        Intent intent = new Intent(getActivity(), BrowseErrorActivity.class);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(getActivity(), ((String) item), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
         }
 
     }
