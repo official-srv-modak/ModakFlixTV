@@ -31,13 +31,15 @@ public final class MovieList {
         list = new ArrayList<>();
 
         JSONObject showJSONList = MiscOperations.getDataFromServer(url);
-        String title[] = getListsFromJSONObject(showJSONList, titleIndex);
+        String title[] = getListsFromJSONObject(showJSONList, titleIndex, "title");
         NUM_COLS = title.length;
 
-        String description[] = getListsFromJSONObject(showJSONList, "des");;
-        String videoUrl[] = getListsFromJSONObject(showJSONList, "url");
-        String bgImageUrl[] = getListsFromJSONObject(showJSONList, "album_art_path");
-        String cardImageUrl[] = getListsFromJSONObject(showJSONList, "album_art_path");
+        String description[] = getListsFromJSONObject(showJSONList, "des", "");;
+        String videoUrl[] = getListsFromJSONObject(showJSONList, "url", "");
+        String bgImageUrl[] = getListsFromJSONObject(showJSONList, "album_art_path", "");
+        String cardImageUrl[] = getListsFromJSONObject(showJSONList, "album_art_path", "");
+        String resumePos[] = getListsFromJSONObject(showJSONList, "position", "");
+        String duration[] = getListsFromJSONObject(showJSONList, "duration", "");
 
         for (int index = 0; index < cardImageUrl.length; ++index) {
             list.add(
@@ -46,7 +48,9 @@ public final class MovieList {
                             description[index],
                             videoUrl[index],
                             cardImageUrl[index],
-                            bgImageUrl[index]));
+                            bgImageUrl[index],
+                            Integer.parseInt(resumePos[index]),
+                            Integer.parseInt(duration[index])));
         }
 
         return list;
@@ -59,7 +63,9 @@ public final class MovieList {
             String description,
             String videoUrl,
             String cardImageUrl,
-            String backgroundImageUrl) {
+            String backgroundImageUrl,
+            int resumePos,
+            int duration) {
         Movie movie = new Movie();
         movie.setId(count++);
         movie.setTitle(title);
@@ -67,10 +73,12 @@ public final class MovieList {
         movie.setCardImageUrl(cardImageUrl);
         movie.setBackgroundImageUrl(backgroundImageUrl);
         movie.setVideoUrl(videoUrl);
+        movie.setResumePos(resumePos);
+        movie.setDuration(duration);
         return movie;
     }
 
-    private static String[] getListsFromJSONObject(JSONObject jsonObject, String index)
+    private static String[] getListsFromJSONObject(JSONObject jsonObject, String index, String posFlag)
     {
         try {
             JSONArray cards = jsonObject.getJSONArray("cards");
@@ -80,15 +88,28 @@ public final class MovieList {
             {
                 JSONObject temp = (JSONObject) cards.get(i);
 
-                if(index.equals(MiscOperations.position))
+                if(temp.has(index))
                 {
-                    int pos = temp.getInt(MiscOperations.position);
-                    int dur = temp.getInt(MiscOperations.duration);
-                    String title = temp.getString(MiscOperations.title_index_show);
-                    output[i] = MiscOperations.resumeString(pos, dur, title);
+                    if(index.equals(MiscOperations.position))
+                    {
+                        int pos = temp.getInt(MiscOperations.position);
+                        int dur = temp.getInt(MiscOperations.duration);
+                        if(posFlag.equals("title"))
+                        {
+                            String title = temp.getString(MiscOperations.title_index_show);
+                            output[i] = MiscOperations.resumeString(pos, dur, title);
+                        }
+                        else
+                        {
+                            output[i] = String.valueOf(pos);
+                        }
+
+                    }
+                    else
+                        output[i] = temp.getString(index);
                 }
                 else
-                    output[i] = temp.getString(index);
+                    output[i] = "0";
             }
             return output;
         } catch (JSONException e) {
