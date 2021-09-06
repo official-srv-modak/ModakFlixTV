@@ -29,7 +29,7 @@ public class Splashscreen extends FragmentActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(Splashscreen.this, MainActivity.class);
+                Intent intent = new Intent(Splashscreen.this, ProfilesActivity.class);
                 startActivity(intent);
                 finish();
             }
