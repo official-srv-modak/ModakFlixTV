@@ -223,7 +223,7 @@ public class ProfileFragment extends Fragment {
                     });
                     c.addView(view);*/
                     TextView loading = getActivity().findViewById(R.id.loading);
-                    loading.setVisibility(View.INVISIBLE);
+                    loading.setText("Use mobile app to edit profiles.");
                 }
             });
 
