@@ -31,6 +31,7 @@ public class MainActivity extends FragmentActivity {
 
     public static void setHighlightView(View view, Activity activity)
     {
+        view.setFocusable(true);
         view.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @SuppressLint("UseCompatLoadingForDrawables")
             @Override

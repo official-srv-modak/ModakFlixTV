@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -290,6 +291,7 @@ public class EditProfileFragment extends Fragment {
 
     private class LoadCard extends AsyncTask<String, Void, Integer> {
         protected Integer doInBackground(String... json) {
+
             String processFlag = "0";
             if(json.length > 1)
                 processFlag = json[1];
@@ -314,18 +316,15 @@ public class EditProfileFragment extends Fragment {
                             e.printStackTrace();
                             //showServerDialog("Server not found! Want to input local IP?");
                         }
-                        LinearLayout c = getActivity().findViewById(R.id.linearLayout2);
-                        TextView heading = getActivity().findViewById(R.id.loadingEdit);
-                        heading.setVisibility(View.GONE);
-                        c.removeView(heading);
+                        LinearLayout c = getActivity().findViewById(R.id.linearLayoutEdit1);
                         //c.removeAllViews();
-                        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams
-                                (LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                         if(show!=null)
                         {
                             for (int i = 0; i < show.length(); ) {
                                 LinearLayout linearLayout2 = new LinearLayout(getActivity());
 
+                                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams
+                                        (LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                                 linearLayout2.setLayoutParams(params);
                                 linearLayout2.setWeightSum(2f);
                                 linearLayout2.setOrientation(LinearLayout.HORIZONTAL);
@@ -338,24 +337,31 @@ public class EditProfileFragment extends Fragment {
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
-                                    View view = LayoutInflater.from(getActivity()).inflate(R.layout.edit_profiles, null);
+                                    View view = LayoutInflater.from(getActivity()).inflate(R.layout.profiles, null);
                                     @SuppressLint({"NewApi", "LocalSuppress"}) int uniqueId = View.generateViewId();
                                     view.setId(uniqueId);
-                                    MainActivity.setHighlightView(view, getActivity());
+
+                                    view.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                                        @SuppressLint("UseCompatLoadingForDrawables")
+                                        @Override
+                                        public void onFocusChange(View view, boolean b) {
+                                            if(view.getBackground()==null)
+                                            {
+                                                view.setBackground(getResources().getDrawable(R.drawable.block_white));
+                                            }
+                                            else
+                                            {
+                                                view.setBackground(null);
+                                            }
+                                        }
+                                    });
+
                                     TextView tv = view.findViewById(R.id.accountName);
                                     try {
                                         tv.setText(card.getString("first_name") + " " + card.getString("last_name"));
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
-                                    ImageView deleteProfile = view.findViewById(R.id.deleteProfileBtn);
-                                    view.bringToFront();
-                                    deleteProfile.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            c.removeView(view);
-                                        }
-                                    });
                                     linearLayout2.addView(view);
 
                                 }
@@ -365,12 +371,9 @@ public class EditProfileFragment extends Fragment {
                         }
                         View view = LayoutInflater.from(getActivity()).inflate(R.layout.profiles, null);
                         @SuppressLint({"NewApi", "LocalSuppress"}) int uniqueId = View.generateViewId();
-
                         view.setId(uniqueId);
                         TextView tv = view.findViewById(R.id.accountName);
                         tv.setText("+");
-                        MainActivity.setHighlightView(view, getActivity());
-                        view.setLayoutParams(params);
                         view.setOnClickListener(new View.OnClickListener() {
                             @Override
 
@@ -378,6 +381,21 @@ public class EditProfileFragment extends Fragment {
                                 DisplayProfileDialog("Enter the details", finalJsonData);
                             }
                         });
+                        view.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                            @SuppressLint("UseCompatLoadingForDrawables")
+                            @Override
+                            public void onFocusChange(View view, boolean b) {
+                                if(view.getBackground()==null)
+                                {
+                                    view.setBackground(getResources().getDrawable(R.drawable.block_white));
+                                }
+                                else
+                                {
+                                    view.setBackground(null);
+                                }
+                            }
+                        });
+
                         c.addView(view);
                     }
                 });
@@ -403,7 +421,7 @@ public class EditProfileFragment extends Fragment {
                             e.printStackTrace();
                             //showServerDialog("Server not found! Want to input local IP?");
                         }
-                        LinearLayout c = getActivity().findViewById(R.id.linearLayout2);
+                        LinearLayout c = getActivity().findViewById(R.id.linearLayoutEdit1);
                         c.removeAllViews();
                         if(show!=null)
                         {
@@ -411,10 +429,9 @@ public class EditProfileFragment extends Fragment {
                                 LinearLayout linearLayout2 = new LinearLayout(getActivity());
 
                                 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams
-                                        (LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                                        (LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                                 linearLayout2.setLayoutParams(params);
                                 linearLayout2.setWeightSum(2f);
-                                linearLayout2.setVisibility(View.VISIBLE);
                                 linearLayout2.setOrientation(LinearLayout.HORIZONTAL);
                                 linearLayout2.setHorizontalGravity(Gravity.CENTER_HORIZONTAL);
 
@@ -425,9 +442,24 @@ public class EditProfileFragment extends Fragment {
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
-                                    View view = LayoutInflater.from(getActivity()).inflate(R.layout.edit_profiles, null);
+                                    View view = LayoutInflater.from(getActivity()).inflate(R.layout.profiles, null);
                                     @SuppressLint({"NewApi", "LocalSuppress"}) int uniqueId = View.generateViewId();
                                     view.setId(uniqueId);
+
+                                    view.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                                        @SuppressLint("UseCompatLoadingForDrawables")
+                                        @Override
+                                        public void onFocusChange(View view, boolean b) {
+                                            if(view.getBackground()==null)
+                                            {
+                                                view.setBackground(getResources().getDrawable(R.drawable.block_white));
+                                            }
+                                            else
+                                            {
+                                                view.setBackground(null);
+                                            }
+                                        }
+                                    });
 
                                     TextView tv = view.findViewById(R.id.accountName);
                                     try {
@@ -435,15 +467,6 @@ public class EditProfileFragment extends Fragment {
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
-                                    ImageView deleteProfile = view.findViewById(R.id.deleteProfileBtn);
-                                    view.bringToFront();
-                                    deleteProfile.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            linearLayout2.removeView(view);
-                                            deleteProfileFuntion(view, finalJsonData);
-                                        }
-                                    });
                                     linearLayout2.addView(view);
 
                                 }
@@ -463,12 +486,24 @@ public class EditProfileFragment extends Fragment {
                                 DisplayProfileDialog("Enter the details", finalJsonData);
                             }
                         });
+                        view.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                            @SuppressLint("UseCompatLoadingForDrawables")
+                            @Override
+                            public void onFocusChange(View view, boolean b) {
+                                if(view.getBackground()==null)
+                                {
+                                    view.setBackground(getResources().getDrawable(R.drawable.block_white));
+                                }
+                                else
+                                {
+                                    view.setBackground(null);
+                                }
+                            }
+                        });
                         c.addView(view);
                     }
                 });
             }
-
-
             return null;
         }
         ProgressDialog progressDialog = new ProgressDialog(getActivity());;

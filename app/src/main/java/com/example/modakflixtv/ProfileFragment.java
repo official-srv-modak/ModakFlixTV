@@ -192,7 +192,7 @@ public class ProfileFragment extends Fragment {
                             c.addView(linearLayout2);
                         }
                     }
-                    View view = LayoutInflater.from(getActivity()).inflate(R.layout.profiles, null);
+                    /*View view = LayoutInflater.from(getActivity()).inflate(R.layout.profiles, null);
                     @SuppressLint({"NewApi", "LocalSuppress"}) int uniqueId = View.generateViewId();
                     view.setId(uniqueId);
                     TextView tv = view.findViewById(R.id.accountName);
@@ -221,7 +221,7 @@ public class ProfileFragment extends Fragment {
                             }
                         }
                     });
-                    c.addView(view);
+                    c.addView(view);*/
                     TextView loading = getActivity().findViewById(R.id.loading);
                     loading.setVisibility(View.INVISIBLE);
                 }
