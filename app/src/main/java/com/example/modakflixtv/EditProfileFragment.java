@@ -73,7 +73,7 @@ public class EditProfileFragment extends Fragment {
         oldData = EditProfileActivity.oldData;
 
         refreshData(jsonData.toString(), "0");
-        ImageView saveBtn = getActivity().findViewById(R.id.saveBtn);
+        TextView saveBtn = getActivity().findViewById(R.id.saveBtn);
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -83,13 +83,16 @@ public class EditProfileFragment extends Fragment {
                 getActivity().finish();
             }
         });
-        ImageView discard = getActivity().findViewById(R.id.discardBtn);
+        MainActivity.setHighlightView(saveBtn, getActivity());
+
+        TextView discard = getActivity().findViewById(R.id.discardBtn);
         discard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 discardProcess();
             }
         });
+        MainActivity.setHighlightView(discard, getActivity());
     }
 
     public void discardProcess()
@@ -316,13 +319,13 @@ public class EditProfileFragment extends Fragment {
                         heading.setVisibility(View.GONE);
                         c.removeView(heading);
                         //c.removeAllViews();
+                        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams
+                                (LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                         if(show!=null)
                         {
                             for (int i = 0; i < show.length(); ) {
                                 LinearLayout linearLayout2 = new LinearLayout(getActivity());
 
-                                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams
-                                        (LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                                 linearLayout2.setLayoutParams(params);
                                 linearLayout2.setWeightSum(2f);
                                 linearLayout2.setOrientation(LinearLayout.HORIZONTAL);
@@ -338,7 +341,7 @@ public class EditProfileFragment extends Fragment {
                                     View view = LayoutInflater.from(getActivity()).inflate(R.layout.edit_profiles, null);
                                     @SuppressLint({"NewApi", "LocalSuppress"}) int uniqueId = View.generateViewId();
                                     view.setId(uniqueId);
-
+                                    MainActivity.setHighlightView(view, getActivity());
                                     TextView tv = view.findViewById(R.id.accountName);
                                     try {
                                         tv.setText(card.getString("first_name") + " " + card.getString("last_name"));
@@ -362,9 +365,12 @@ public class EditProfileFragment extends Fragment {
                         }
                         View view = LayoutInflater.from(getActivity()).inflate(R.layout.profiles, null);
                         @SuppressLint({"NewApi", "LocalSuppress"}) int uniqueId = View.generateViewId();
+
                         view.setId(uniqueId);
                         TextView tv = view.findViewById(R.id.accountName);
                         tv.setText("+");
+                        MainActivity.setHighlightView(view, getActivity());
+                        view.setLayoutParams(params);
                         view.setOnClickListener(new View.OnClickListener() {
                             @Override
 
@@ -372,7 +378,6 @@ public class EditProfileFragment extends Fragment {
                                 DisplayProfileDialog("Enter the details", finalJsonData);
                             }
                         });
-
                         c.addView(view);
                     }
                 });

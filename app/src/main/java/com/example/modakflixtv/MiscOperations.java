@@ -1,6 +1,8 @@
 package com.example.modakflixtv;
 
+import android.annotation.SuppressLint;
 import android.util.Log;
+import android.view.View;
 
 import org.json.JSONException;
 import org.json.JSONObject;

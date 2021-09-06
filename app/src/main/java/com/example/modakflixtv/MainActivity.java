@@ -1,6 +1,9 @@
 package com.example.modakflixtv;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.fragment.app.FragmentActivity;
 
@@ -24,5 +27,23 @@ public class MainActivity extends FragmentActivity {
 
     private void setUser() {
         MiscOperations.username = getIntent().getStringExtra("username");
+    }
+
+    public static void setHighlightView(View view, Activity activity)
+    {
+        view.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @SuppressLint("UseCompatLoadingForDrawables")
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if(view.getBackground()==null)
+                {
+                    view.setBackground(activity.getResources().getDrawable(R.drawable.block_white));
+                }
+                else
+                {
+                    view.setBackground(null);
+                }
+            }
+        });
     }
 }
