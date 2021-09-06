@@ -283,7 +283,7 @@ public class MainFragment extends BrowseSupportFragment {
 
     public void resetProfile(String Message)
     {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity(), R.style.Theme_AppCompat);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity(), R.style.Theme_AppCompat_Dialog);
         alertDialogBuilder.setMessage(Message);
 
         alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -332,7 +332,7 @@ public class MainFragment extends BrowseSupportFragment {
 
     public void showContactUs(String Message)
     {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity(), R.style.Theme_AppCompat);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity(), R.style.Theme_AppCompat_Dialog);
         alertDialogBuilder.setMessage(Message);
 
         alertDialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {

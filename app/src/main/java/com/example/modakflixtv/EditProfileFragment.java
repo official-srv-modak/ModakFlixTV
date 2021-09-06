@@ -100,7 +100,7 @@ public class EditProfileFragment extends Fragment {
     {
         if(determineChanges(jsonData))
         {
-            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity(), R.style.Theme_AppCompat);
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity(), R.style.Theme_AppCompat_Dialog);
             alertDialogBuilder.setMessage("Do you want to discard changes?");
             alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                 @Override
@@ -258,7 +258,7 @@ public class EditProfileFragment extends Fragment {
     public String DisplayProfileDialog(String Message, JSONObject jsonObject)
     {
         final JSONObject finalJsonData = jsonObject;
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity(), R.style.Theme_AppCompat);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity(), R.style.Theme_AppCompat_Dialog);
         alertDialogBuilder.setMessage(Message);
         EditText input = new EditText(getActivity());
         input.setHint("Name");

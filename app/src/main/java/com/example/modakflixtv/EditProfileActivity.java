@@ -49,7 +49,7 @@ public class EditProfileActivity extends FragmentActivity {
 
     public void determineChangesAlert()
     {
-            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this, R.style.Theme_AppCompat);
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this, R.style.Theme_AppCompat_Dialog);
             alertDialogBuilder.setMessage("Do you want to discard changes?");
             alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                 @Override
