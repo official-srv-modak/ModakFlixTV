@@ -201,10 +201,24 @@ public class ProfileFragment extends Fragment {
                     view.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            /*getActivity().overridePendingTransition(0, R.anim.fade_out);
-                            Intent intent = new Intent(getActivity(), EditProfile.class);
+                            getActivity().overridePendingTransition(0, R.anim.fade_out);
+                            Intent intent = new Intent(getActivity(), EditProfileActivity.class);
                             intent.putExtra("profileData", finalJsonData.toString());
-                            startActivity(intent);*/
+                            startActivity(intent);
+                        }
+                    });
+                    view.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                        @SuppressLint("UseCompatLoadingForDrawables")
+                        @Override
+                        public void onFocusChange(View view, boolean b) {
+                            if(view.getBackground()==null)
+                            {
+                                view.setBackground(getResources().getDrawable(R.drawable.block_white));
+                            }
+                            else
+                            {
+                                view.setBackground(null);
+                            }
                         }
                     });
                     c.addView(view);

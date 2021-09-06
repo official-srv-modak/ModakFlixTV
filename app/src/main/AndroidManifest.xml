@@ -22,6 +22,9 @@
         android:usesCleartextTraffic="true"
         tools:ignore="MissingTvBanner">
         <activity
+            android:name=".EditProfileActivity"
+            android:exported="true" />
+        <activity
             android:name=".ProfilesActivity"
             android:exported="true" />
         <activity
