@@ -1,5 +1,8 @@
 package com.example.modakflixtv;
 
+import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -9,6 +12,7 @@ import android.os.Handler;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.leanback.app.BackgroundManager;
 import androidx.leanback.app.BrowseSupportFragment;
 import androidx.leanback.widget.ArrayObjectAdapter;
@@ -100,7 +104,6 @@ public class MainFragment extends BrowseSupportFragment {
 
     private void loadRows() {
 
-        MiscOperations.get_shows_watched_path += MiscOperations.username;
         List<Movie> moviesList = MovieList.setupMovies(MiscOperations.get_movies_list, MiscOperations.title_index_show);
         List<Movie> resumeList = MovieList.setupMovies(MiscOperations.get_shows_watched_path, MiscOperations.position);
 
@@ -252,10 +255,93 @@ public class MainFragment extends BrowseSupportFragment {
                     Intent intent = new Intent(getActivity(), BrowseErrorActivity.class);
                     startActivity(intent);
                 } else {
-                    Toast.makeText(getActivity(), ((String) item), Toast.LENGTH_SHORT).show();
+                    menuActions((String) item);
                 }
             }
         }
+    }
+
+    private void menuActions(String option)
+    {
+        if(option.equalsIgnoreCase(getResources().getString(R.string.profiles)))
+        {
+            Intent intent = new Intent(getActivity(), ProfilesActivity.class);
+            intent.putExtra("startFlag", "1");
+            startActivity(intent);
+            getActivity().finish();
+        }
+        else if(option.equalsIgnoreCase(getResources().getString(R.string.reset_profile)))
+        {
+            resetProfile("Do you really want to reset all you watching history?");
+        }
+        else if(option.equalsIgnoreCase(getResources().getString(R.string.contact_us)))
+        {
+            showContactUs("Developer - Sourav Modak\nContact Number - +91 9500166574\nE-Mail - official.srv.modak@gmail.com");
+        }
+
+    }
+
+    public void resetProfile(String Message)
+    {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity(), R.style.Theme_AppCompat);
+        alertDialogBuilder.setMessage(Message);
+
+        alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                ResetProfile resetProfile = new ResetProfile();
+                resetProfile.execute(MiscOperations.reset_profile);
+
+            }
+        });
+        alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        alertDialogBuilder.show();
+    }
+
+    private class ResetProfile extends AsyncTask<String, Void, Integer> {
+
+        @SuppressLint("ResourceType")
+        @Override
+        protected Integer doInBackground(String... url) {
+            MiscOperations.pingDataServer(MiscOperations.handleUrl(url[0]));
+            Intent intent = getActivity().getIntent();
+            getActivity().finish();
+            startActivity(intent);
+            return null;
+        }
+
+        ProgressDialog progressDialog = new ProgressDialog(getActivity());;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            progressDialog.setMessage("Loading...");
+            progressDialog.setIndeterminate(false);
+            progressDialog.setCancelable(true);
+            progressDialog.show();
+
+
+        }
+    }
+
+    public void showContactUs(String Message)
+    {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity(), R.style.Theme_AppCompat);
+        alertDialogBuilder.setMessage(Message);
+
+        alertDialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        alertDialogBuilder.show();
     }
 
     private final class ItemViewSelectedListener implements OnItemViewSelectedListener {
@@ -297,6 +383,11 @@ public class MainFragment extends BrowseSupportFragment {
             view.setTextColor(Color.WHITE);
             view.setGravity(Gravity.CENTER);
             return new ViewHolder(view);
+        }
+
+        @Override
+        public void setOnClickListener(ViewHolder holder, View.OnClickListener listener) {
+            Toast.makeText(getContext(), "Sourav Modak", Toast.LENGTH_LONG).show();
         }
 
         @Override

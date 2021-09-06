@@ -27,6 +27,7 @@ public class MainActivity extends FragmentActivity {
 
     private void setUser() {
         MiscOperations.username = getIntent().getStringExtra("username");
+        MiscOperations.intialiseMiscLinks();
     }
 
     public static void setHighlightView(View view, Activity activity)

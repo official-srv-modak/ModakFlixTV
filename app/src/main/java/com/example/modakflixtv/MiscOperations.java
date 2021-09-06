@@ -29,7 +29,7 @@ public class MiscOperations {
     public static String record_position_path = domain_name+"record_position.php";
     public static String delete_position_path = domain_name+"delete_from_shows_watched.php";
     public static String get_shows_watched_path = domain_name+"get_shows_watched.php?username="+username;
-    public static String reset_profile = domain_name+"reset_profile.php?username=admin";
+    public static String reset_profile = domain_name+"reset_profile.php?username="+username;
     public static String get_movies_list = domain_name+"get_movies_list_json.php";
     public static String reload_shows_watched = domain_name+"reload_shows_watched.php";
     public static String search_shows = domain_name+"search_show.php";
@@ -38,6 +38,20 @@ public class MiscOperations {
     public static String get_description = domain_name+"get_description.php";
     public static String add_profile = domain_name+"add_profile.php";
 
+    public static void intialiseMiscLinks()
+    {
+        record_position_path = domain_name+"record_position.php";
+        delete_position_path = domain_name+"delete_from_shows_watched.php";
+        get_shows_watched_path = domain_name+"get_shows_watched.php?username="+username;
+        reset_profile = domain_name+"reset_profile.php?username="+username;
+        get_movies_list = domain_name+"get_movies_list_json.php";
+        reload_shows_watched = domain_name+"reload_shows_watched.php";
+        search_shows = domain_name+"search_show.php";
+        get_profiles = domain_name+"get_profiles.php";
+        reload_description = domain_name+"reload_description.php";
+        get_description = domain_name+"get_description.php";
+        add_profile = domain_name+"add_profile.php";
+    }
     public static JSONObject getDataFromServer(String URL)
     {
         URL = handleUrl(URL);
