@@ -15,6 +15,7 @@
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_modakflix"
+        android:banner="@mipmap/ic_modakflix"
         android:label="@string/app_name"
         android:logo="@mipmap/ic_modakflix"
         android:supportsRtl="true"
@@ -44,11 +45,8 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:banner="@drawable/app_icon_your_company"
             android:exported="true"
-            android:icon="@drawable/app_icon_your_company"
             android:label="@string/app_name"
-            android:logo="@drawable/app_icon_your_company"
             android:screenOrientation="landscape" />
         <activity
             android:name=".DetailsActivity"
