@@ -106,11 +106,16 @@ public class SearchFragment extends Fragment {
                     {
                         LoadCard ld = new LoadCard();
                         ld.execute(MiscOperations.search_shows+"?query="+searchTextBox.getText()+"&username="+username);
+                        TextView searchTitle = (TextView) getActivity().findViewById(R.id.searchTitle);
+                        searchTitle.setVisibility(View.VISIBLE);
+                        searchTitle.setText("Results of \""+searchTextBox.getText()+"\"");
                     }
                     else
                     {
-                        LinearLayout linearLayout1 = getActivity().findViewById(R.id.linearLayout1);
+                        LinearLayout linearLayout1 = getActivity().findViewById(R.id.linearLayout2);
                         linearLayout1.removeAllViews();
+                        TextView searchTitle = (TextView) getActivity().findViewById(R.id.searchTitle);
+                        searchTitle.setVisibility(View.GONE);
                     }
 
                 }
@@ -151,7 +156,7 @@ public class SearchFragment extends Fragment {
                             e.printStackTrace();
                         }*/
 
-                        LinearLayout linearLayout1 = getActivity().findViewById(R.id.linearLayout1);
+                        LinearLayout linearLayout1 = getActivity().findViewById(R.id.linearLayout2);
                         linearLayout1.removeAllViews();
                         try {
                             JSONArray show = finalResult.getJSONArray("cards");
@@ -200,17 +205,20 @@ public class SearchFragment extends Fragment {
                                         movie.setTitle(name.toString());
 
                                         try {
-                                            movie.setResumePos(Integer.parseInt(card.getString("position")));
-                                            movie.setDuration(Integer.parseInt(card.getString("duration")));
-                                            movie.setVideoUrl(card.getString("url").toString());
-                                            movie.setDescription(card.getString("des"));
+                                            if(card.has("position"))
+                                                movie.setResumePos(Integer.parseInt(card.getString("position")));
+                                            if(card.has("duration"))
+                                                movie.setDuration(Integer.parseInt(card.getString("duration")));
+                                            if(card.has("url"))
+                                                movie.setVideoUrl(card.getString("url").toString());
+                                            if(card.has("des"))
+                                                movie.setDescription(card.getString("des"));
                                         } catch (JSONException e) {
                                             e.printStackTrace();
                                         }
                                         searchElementClick(movie, imageView);
                                     }
                                 });
-
 
                                 linearLayout1.addView(view);
                             }
