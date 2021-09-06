@@ -19,12 +19,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageButton
+        <ImageView
             android:id="@+id/deleteProfileBtn"
             android:layout_width="30dp"
-            android:layout_height="29dp"
+            android:layout_height="21dp"
             android:layout_gravity="right"
-            android:background="#00FFFFFF"
             app:srcCompat="@android:drawable/ic_notification_clear_all" />
 
         <androidx.cardview.widget.CardView

@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
@@ -16,7 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -41,6 +43,11 @@ public class EditProfileFragment extends Fragment {
         return fragment;
     }
 
+    public View findViewById(int id)
+    {
+        View view = getActivity().findViewById(id);
+        return view;
+    }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,8 +57,13 @@ public class EditProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        initialise();
         return inflater.inflate(R.layout.fragment_edit_profile, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        initialise();
     }
 
     private void initialise()
@@ -61,7 +73,7 @@ public class EditProfileFragment extends Fragment {
         oldData = EditProfileActivity.oldData;
 
         refreshData(jsonData.toString(), "0");
-        ImageButton saveBtn = getActivity().findViewById(R.id.saveBtn);
+        ImageView saveBtn = getActivity().findViewById(R.id.saveBtn);
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -71,8 +83,67 @@ public class EditProfileFragment extends Fragment {
                 getActivity().finish();
             }
         });
+        ImageView discard = getActivity().findViewById(R.id.discardBtn);
+        discard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                discardProcess();
+            }
+        });
     }
 
+    public void discardProcess()
+    {
+        if(determineChanges(jsonData))
+        {
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity(), R.style.Theme_AppCompat);
+            alertDialogBuilder.setMessage("Do you want to discard changes?");
+            alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Intent intent = new Intent(getActivity(), ProfilesActivity.class);
+                    startActivity(intent);
+                    getActivity().finish();
+                }
+            });
+            alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            });
+            alertDialogBuilder.show();
+        }
+        else
+        {
+            Intent intent = new Intent(getActivity(), ProfilesActivity.class);
+            startActivity(intent);
+            getActivity().finish();
+        }
+
+    }
+    public Boolean determineChanges(JSONObject data)
+    {
+        try {
+            JSONArray arrNew = data.getJSONArray("cards");
+            JSONArray arrOld = oldData.getJSONArray("cards");
+            if(arrNew.length()!=arrOld.length())
+                return true;
+            else
+                return false;
+            /*for(int i = 0; i<arr.length(); i++)
+            {
+                JSONObject card = arr.getJSONObject(i);
+                if(card.getString("Serial").trim().equals("-1"))
+                {
+                    return true;
+                }
+            }*/
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
     public Boolean determineDuplicate(JSONObject data, String name)
     {
         try {
@@ -183,7 +254,7 @@ public class EditProfileFragment extends Fragment {
     public String DisplayProfileDialog(String Message, JSONObject jsonObject)
     {
         final JSONObject finalJsonData = jsonObject;
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity(), R.style.Theme_AppCompat);
         alertDialogBuilder.setMessage(Message);
         EditText input = new EditText(getActivity());
         input.setHint("Name");
@@ -242,6 +313,7 @@ public class EditProfileFragment extends Fragment {
                         }
                         LinearLayout c = getActivity().findViewById(R.id.linearLayout2);
                         TextView heading = getActivity().findViewById(R.id.loadingEdit);
+                        heading.setVisibility(View.GONE);
                         c.removeView(heading);
                         //c.removeAllViews();
                         if(show!=null)
@@ -273,7 +345,7 @@ public class EditProfileFragment extends Fragment {
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
-                                    ImageButton deleteProfile = view.findViewById(R.id.deleteProfileBtn);
+                                    ImageView deleteProfile = view.findViewById(R.id.deleteProfileBtn);
                                     view.bringToFront();
                                     deleteProfile.setOnClickListener(new View.OnClickListener() {
                                         @Override
@@ -358,7 +430,7 @@ public class EditProfileFragment extends Fragment {
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
-                                    ImageButton deleteProfile = view.findViewById(R.id.deleteProfileBtn);
+                                    ImageView deleteProfile = view.findViewById(R.id.deleteProfileBtn);
                                     view.bringToFront();
                                     deleteProfile.setOnClickListener(new View.OnClickListener() {
                                         @Override
