@@ -18,5 +18,11 @@ public class MainActivity extends FragmentActivity {
                     .replace(R.id.main_browse_fragment, new MainFragment())
                     .commitNow();
         }
+
+        setUser();
+    }
+
+    private void setUser() {
+        MiscOperations.username = getIntent().getStringExtra("username");
     }
 }

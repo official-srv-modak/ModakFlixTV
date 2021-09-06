@@ -99,6 +99,8 @@ public class MainFragment extends BrowseSupportFragment {
     }
 
     private void loadRows() {
+
+        MiscOperations.get_shows_watched_path += MiscOperations.username;
         List<Movie> moviesList = MovieList.setupMovies(MiscOperations.get_movies_list, MiscOperations.title_index_show);
         List<Movie> resumeList = MovieList.setupMovies(MiscOperations.get_shows_watched_path, MiscOperations.position);
 
@@ -177,7 +179,8 @@ public class MainFragment extends BrowseSupportFragment {
     private void setupUIElements() {
         // setBadgeDrawable(getActivity().getResources().getDrawable(
         // R.drawable.videos_by_google_banner));
-        setTitle(getString(R.string.browse_title)); // Badge, when set, takes precedent
+
+        setTitle(MiscOperations.username); // Badge, when set, takes precedent
         // over title
         setHeadersState(HEADERS_ENABLED);
         setHeadersTransitionOnBackEnabled(true);

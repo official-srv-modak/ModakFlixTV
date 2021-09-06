@@ -66,7 +66,7 @@ public class VideoDetailsFragment extends DetailsSupportFragment {
 
     static boolean resumeFlag = false;
 
-    static String username = "Sourav Modak", title = "";
+    static String username = "", title = "";
 
     private Movie mSelectedMovie;
 
@@ -117,6 +117,7 @@ public class VideoDetailsFragment extends DetailsSupportFragment {
 
     private void intialiseUI()
     {
+        username = MiscOperations.username;
         if(resumeFlag)
         {
             mSelectedMovie.setTitle(MiscOperations.resumeString(posFromMx, durFromMx, title));
