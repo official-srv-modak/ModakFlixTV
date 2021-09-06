@@ -55,8 +55,8 @@ public class EditProfileActivity extends FragmentActivity {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     Intent intent = new Intent(EditProfileActivity.this, ProfilesActivity.class);
-                    startActivity(intent);
                     finish();
+                    startActivity(intent);
                 }
             });
             alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {

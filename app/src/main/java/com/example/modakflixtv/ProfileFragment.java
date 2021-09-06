@@ -183,8 +183,8 @@ public class ProfileFragment extends Fragment {
                                         Intent intent = new Intent(getActivity(), MainActivity.class);
                                         intent.putExtra("username", tv.getText());
                                         intent.putExtra("ip", ip);
-                                        startActivity(intent);
                                         getActivity().finish();
+                                        startActivity(intent);
                                     }
                                 });
                             }

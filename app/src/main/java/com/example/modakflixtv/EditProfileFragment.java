@@ -80,8 +80,8 @@ public class EditProfileFragment extends Fragment {
             public void onClick(View v) {
                 saveProfile(jsonData);
                 Intent intent = new Intent(getActivity(), ProfilesActivity.class);
-                startActivity(intent);
                 getActivity().finish();
+                startActivity(intent);
             }
         });
         MainActivity.setHighlightView(saveBtn, getActivity());
@@ -106,8 +106,8 @@ public class EditProfileFragment extends Fragment {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     Intent intent = new Intent(getActivity(), ProfilesActivity.class);
-                    startActivity(intent);
                     getActivity().finish();
+                    startActivity(intent);
                 }
             });
             alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -121,8 +121,8 @@ public class EditProfileFragment extends Fragment {
         else
         {
             Intent intent = new Intent(getActivity(), ProfilesActivity.class);
-            startActivity(intent);
             getActivity().finish();
+            startActivity(intent);
         }
 
     }

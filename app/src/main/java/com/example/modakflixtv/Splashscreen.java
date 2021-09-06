@@ -30,8 +30,8 @@ public class Splashscreen extends FragmentActivity {
             @Override
             public void run() {
                 Intent intent = new Intent(Splashscreen.this, ProfilesActivity.class);
-                startActivity(intent);
                 finish();
+                startActivity(intent);
             }
         }, 5000);
 

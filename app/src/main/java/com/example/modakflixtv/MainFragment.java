@@ -267,8 +267,8 @@ public class MainFragment extends BrowseSupportFragment {
         {
             Intent intent = new Intent(getActivity(), ProfilesActivity.class);
             intent.putExtra("startFlag", "1");
-            startActivity(intent);
             getActivity().finish();
+            startActivity(intent);
         }
         else if(option.equalsIgnoreCase(getResources().getString(R.string.reset_profile)))
         {
