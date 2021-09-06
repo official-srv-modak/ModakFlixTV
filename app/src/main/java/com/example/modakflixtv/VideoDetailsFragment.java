@@ -85,11 +85,18 @@ public class VideoDetailsFragment extends DetailsSupportFragment {
 
         mSelectedMovie =
                 (Movie) getActivity().getIntent().getSerializableExtra(DetailsActivity.MOVIE);
-        if(mSelectedMovie.getTitle().contains("-"))
+        if(mSelectedMovie.getResumePos() != 0)
         {
-            title = mSelectedMovie.getTitle().split("-")[1].trim();
             posFromMx = mSelectedMovie.getResumePos();
             durFromMx = mSelectedMovie.getDuration();
+            if(mSelectedMovie.getTitle().contains("-"))
+                title = mSelectedMovie.getTitle().split("-")[1].trim();
+            else
+            {
+                title = MiscOperations.resumeString(posFromMx, durFromMx, mSelectedMovie.getTitle());
+                mSelectedMovie.setTitle(title);
+            }
+
         }
         else
             title = mSelectedMovie.getTitle();
