@@ -59,38 +59,48 @@ public class MainFragment extends BrowseSupportFragment {
     private DisplayMetrics mMetrics;
     private Timer mBackgroundTimer;
     private String mBackgroundUri;
-    private BackgroundManager mBackgroundManager;
+    public static BackgroundManager mBackgroundManager;
     public static boolean resumeFlag = false;
 
-    @Override
+    /*@Override
     public void onActivityCreated(Bundle savedInstanceState) {
         Log.i(TAG, "onCreate");
         super.onActivityCreated(savedInstanceState);
 
         startUI();
-    }
+    }*/
 
     @Override
     public void onResume() {
         super.onResume();
+        startUI();
+        /*if(resumeFlag)
+        {
+            resumeFlag = false;
+            LoadCard ld = new LoadCard();
+            ld.execute();
+        }*/
+    }
+
+    private void startUI()
+    {
         if(resumeFlag)
         {
             resumeFlag = false;
             LoadCard ld = new LoadCard();
             ld.execute();
         }
-    }
+        else
+        {
+            prepareBackgroundManager();
 
-    private void startUI()
-    {
-        prepareBackgroundManager();
+            setupUIElements();
 
-        setupUIElements();
+            LoadCard ld = new LoadCard();
+            ld.execute();
 
-        LoadCard ld = new LoadCard();
-        ld.execute();
-
-        setupEventListeners();
+            setupEventListeners();
+        }
     }
 
     @Override
@@ -171,6 +181,8 @@ public class MainFragment extends BrowseSupportFragment {
 
     private void prepareBackgroundManager() {
 
+        if(mBackgroundManager != null)
+            mBackgroundManager.release();
         mBackgroundManager = BackgroundManager.getInstance(getActivity());
         mBackgroundManager.attach(getActivity().getWindow());
 

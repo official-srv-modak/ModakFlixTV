@@ -54,7 +54,7 @@ public class VideoDetailsFragment extends DetailsSupportFragment {
     private static final String TAG = "VideoDetailsFragment";
 
     private static final int ACTION_WATCH_TRAILER = 1;
-    private static final int ACTION_RENT = 2;
+    private static final int ACTION_MARK_COMPLETED = 2;
     private static final int ACTION_BUY = 3;
 
     private static final int DETAIL_THUMB_WIDTH = 274;
@@ -183,8 +183,13 @@ public class VideoDetailsFragment extends DetailsSupportFragment {
             actionAdapter.add(
                     new Action(
                             ACTION_WATCH_TRAILER,
-                            getResources().getString(R.string.resume)
-                    ));
+                            getResources().getString(R.string.resume)));
+
+            actionAdapter.add(
+                    new Action(
+                            ACTION_MARK_COMPLETED,
+                            getResources().getString(R.string.mark_as_completed)));
+
             row.setActionsAdapter(actionAdapter);
         }
         else
@@ -238,12 +243,22 @@ public class VideoDetailsFragment extends DetailsSupportFragment {
                         startMxPlayer(mSelectedMovie.getVideoUrl(), pos);
                     else
                         startMxPlayer(mSelectedMovie.getVideoUrl(), 1000);
-                } else {
+                }
+                else if (action.getId() == ACTION_MARK_COMPLETED) {
+
+                    String url = MiscOperations.reset_show+"?username="+username+"&showname="+title;
+                    PingUrl pu = new PingUrl();
+                    pu.execute(MiscOperations.handleUrl(url));
+                    Toast.makeText(getActivity(), "Show : "+title+" marked as completed", Toast.LENGTH_LONG).show();
+                    getActivity().finish();
+                }
+                else {
                     Toast.makeText(getActivity(), action.toString(), Toast.LENGTH_SHORT).show();
                 }
             }
         });
         mPresenterSelector.addClassPresenter(DetailsOverviewRow.class, detailsPresenter);
+        MainFragment.resumeFlag = true;
     }
 
     private void startMxPlayer(String videoUrl, int pos1)
@@ -409,6 +424,13 @@ public class VideoDetailsFragment extends DetailsSupportFragment {
             {
                 openWith.setText("Resume "+mins+" min(s) left");
             }*/
+        }
+    }
+
+    private class PingUrl extends AsyncTask<String, Void, Integer> {
+        protected Integer doInBackground(String... data) {
+            MiscOperations.pingDataServer(data[0]);
+            return 0;
         }
     }
 }

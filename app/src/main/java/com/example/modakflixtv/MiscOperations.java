@@ -37,6 +37,7 @@ public class MiscOperations {
     public static String reload_description = domain_name+"reload_description.php";
     public static String get_description = domain_name+"get_description.php";
     public static String add_profile = domain_name+"add_profile.php";
+    public static String reset_show = domain_name+"reset_show.php";
 
     public static void intialiseMiscLinks()
     {
@@ -51,6 +52,7 @@ public class MiscOperations {
         reload_description = domain_name+"reload_description.php";
         get_description = domain_name+"get_description.php";
         add_profile = domain_name+"add_profile.php";
+        reset_show = domain_name+"reset_show.php";
     }
     public static JSONObject getDataFromServer(String URL)
     {
