@@ -117,7 +117,7 @@ public class MainFragment extends BrowseSupportFragment {
         List<Movie> moviesList = MovieList.setupMovies(MiscOperations.get_movies_list, MiscOperations.title_index_show);
         List<Movie> resumeList = MovieList.setupMovies(MiscOperations.get_shows_watched_path, MiscOperations.position);
 
-        Collections.shuffle(moviesList);
+        //Collections.shuffle(moviesList);
 
         ArrayObjectAdapter rowsAdapter = new ArrayObjectAdapter(new ListRowPresenter());
         CardPresenter cardPresenter = new CardPresenter();
@@ -135,7 +135,7 @@ public class MainFragment extends BrowseSupportFragment {
         }
 
         // Movies
-        Collections.shuffle(moviesList);
+        //Collections.shuffle(moviesList);
 
         ArrayObjectAdapter listRowAdapter = new ArrayObjectAdapter(cardPresenter);
         for (int j = 0; j < moviesList.size(); j++) {
