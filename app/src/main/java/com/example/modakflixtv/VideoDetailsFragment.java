@@ -53,7 +53,7 @@ import java.util.List;
 public class VideoDetailsFragment extends DetailsSupportFragment {
     private static final String TAG = "VideoDetailsFragment";
 
-    private static final int ACTION_WATCH_TRAILER = 1;
+    private static final int ACTION_WATCH_SHOW = 1;
     private static final int ACTION_MARK_COMPLETED = 2;
     private static final int ACTION_BUY = 3;
 
@@ -182,7 +182,7 @@ public class VideoDetailsFragment extends DetailsSupportFragment {
         {
             actionAdapter.add(
                     new Action(
-                            ACTION_WATCH_TRAILER,
+                            ACTION_WATCH_SHOW,
                             getResources().getString(R.string.resume)));
 
             actionAdapter.add(
@@ -196,7 +196,7 @@ public class VideoDetailsFragment extends DetailsSupportFragment {
         {
             actionAdapter.add(
                     new Action(
-                            ACTION_WATCH_TRAILER,
+                            ACTION_WATCH_SHOW,
                             getResources().getString(R.string.play)
                     ));
         /*actionAdapter.add(
@@ -234,7 +234,7 @@ public class VideoDetailsFragment extends DetailsSupportFragment {
         detailsPresenter.setOnActionClickedListener(new OnActionClickedListener() {
             @Override
             public void onActionClicked(Action action) {
-                if (action.getId() == ACTION_WATCH_TRAILER) {
+                if (action.getId() == ACTION_WATCH_SHOW) {
                     /*Intent intent = new Intent(getActivity(), PlaybackActivity.class);
                     intent.putExtra(DetailsActivity.MOVIE, mSelectedMovie);
                     startActivity(intent);*/
