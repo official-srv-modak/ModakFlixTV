@@ -13,6 +13,7 @@
     <string name="title_index_show">name</string>
     <string name="position">position</string>
     <string name="duration">position</string>
+    <string name="split_string_resume">remaining -</string>
 
     <string name="movie">Movie</string>
 

@@ -169,7 +169,8 @@ public class ProfileFragment extends Fragment {
 
                                 TextView tv = view.findViewById(R.id.accountName);
                                 try {
-                                    tv.setText(card.getString("first_name") + " " + card.getString("last_name"));
+                                    MiscOperations.username = card.getString("first_name") + " " + card.getString("last_name");
+                                    tv.setText(MiscOperations.username);
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }

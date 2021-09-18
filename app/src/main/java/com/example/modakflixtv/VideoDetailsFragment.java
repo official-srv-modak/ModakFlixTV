@@ -2,6 +2,8 @@ package com.example.modakflixtv;
 
 import static android.app.Activity.RESULT_OK;
 
+import static com.example.modakflixtv.MiscOperations.ip;
+
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -72,6 +74,7 @@ public class VideoDetailsFragment extends DetailsSupportFragment {
 
     private ArrayObjectAdapter mAdapter;
     private ClassPresenterSelector mPresenterSelector;
+    private static String nameOfShow = "";
 
     private DetailsSupportFragmentBackgroundController mDetailsBackground;
 
@@ -83,14 +86,14 @@ public class VideoDetailsFragment extends DetailsSupportFragment {
         mDetailsBackground = new DetailsSupportFragmentBackgroundController(this);
 
 
-        mSelectedMovie =
-                (Movie) getActivity().getIntent().getSerializableExtra(DetailsActivity.MOVIE);
+        mSelectedMovie = (Movie) getActivity().getIntent().getSerializableExtra(DetailsActivity.MOVIE);
+        nameOfShow = getNameOfShow(mSelectedMovie.getTitle());
         if(mSelectedMovie.getResumePos() != 0)
         {
             posFromMx = mSelectedMovie.getResumePos();
             durFromMx = mSelectedMovie.getDuration();
-            if(mSelectedMovie.getTitle().contains("-"))
-                title = mSelectedMovie.getTitle().split("-")[1].trim();
+            if(mSelectedMovie.getTitle().contains("remaining") && mSelectedMovie.getTitle().contains("Resume"))
+                title = mSelectedMovie.getTitle().split(getResources().getString(R.string.split_string_resume))[1].trim();
             else
             {
                 title = MiscOperations.resumeString(posFromMx, durFromMx, mSelectedMovie.getTitle());
@@ -100,8 +103,14 @@ public class VideoDetailsFragment extends DetailsSupportFragment {
         }
         else
             title = mSelectedMovie.getTitle();
-
         intialiseUI();
+    }
+
+    private String getNameOfShow(String title) {
+        String output = title;
+        if(title.contains("remaining") && title.contains("Resume"))
+            output = title.split(getResources().getString(R.string.split_string_resume))[1].trim();
+        return output;
     }
 
     @Override
@@ -246,11 +255,17 @@ public class VideoDetailsFragment extends DetailsSupportFragment {
                 }
                 else if (action.getId() == ACTION_MARK_COMPLETED) {
 
-                    String url = MiscOperations.reset_show+"?username="+username+"&showname="+title;
+                    String url = MiscOperations.reset_show+"?username="+username+"&showname="+nameOfShow;
                     PingUrl pu = new PingUrl();
                     pu.execute(MiscOperations.handleUrl(url));
-                    Toast.makeText(getActivity(), "Show : "+title+" marked as completed", Toast.LENGTH_LONG).show();
+                    MainFragment.resumeFlag = false;
+                    Toast.makeText(getActivity(), "Show : "+nameOfShow+" marked as completed", Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(getActivity(), MainActivity.class);
+                    intent.putExtra("username", MiscOperations.username);
+                    intent.putExtra("ip", ip);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     getActivity().finish();
+                    startActivity(intent);
                 }
                 else {
                     Toast.makeText(getActivity(), action.toString(), Toast.LENGTH_SHORT).show();
