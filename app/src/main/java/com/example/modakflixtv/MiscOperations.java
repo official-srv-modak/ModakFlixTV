@@ -20,10 +20,11 @@ import java.util.Set;
 
 public class MiscOperations {
 
-    public static String ip = "modakflix.com", ipInfoFilePath = "";
+    public static String ip = "192.168.0.127", ipInfoFilePath = "";
 
     public static String position = "position", duration = "duration", title_index_show = "name";
     public static String username = "";
+    private static int timeout = 5000;
 
     public static String domain_name = "http://"+ip+"/";
     public static String record_position_path = domain_name+"record_position.php";
@@ -41,6 +42,7 @@ public class MiscOperations {
 
     public static void intialiseMiscLinks()
     {
+        domain_name = "http://"+ip+"/";
         record_position_path = domain_name+"record_position.php";
         delete_position_path = domain_name+"delete_from_shows_watched.php";
         get_shows_watched_path = domain_name+"get_shows_watched.php?username="+username;
@@ -72,6 +74,7 @@ public class MiscOperations {
             }
             byte[] postDataBytes = postData.toString().getBytes("UTF-8");
             HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+            conn.setConnectTimeout(timeout);
             conn.setRequestMethod("POST");
             conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
             conn.setRequestProperty("Content-Length", String.valueOf(postDataBytes.length));

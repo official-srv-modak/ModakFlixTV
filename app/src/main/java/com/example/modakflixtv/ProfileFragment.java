@@ -1,5 +1,6 @@
 package com.example.modakflixtv;
 
+import static com.example.modakflixtv.MiscOperations.intialiseMiscLinks;
 import static com.example.modakflixtv.MiscOperations.ipInfoFilePath;
 import static com.example.modakflixtv.MiscOperations.ip;
 
@@ -65,11 +66,20 @@ public class ProfileFragment extends Fragment {
     public static String fetchIpDataFromFile(String ipInfoFilePath)
     {
         File file = null;
-        String ipFromFile = "modakflix.com";
+        String ipFromFile = ip;
         if(!ipInfoFilePath.isEmpty())
         {
             file = new File(ipInfoFilePath);
         }
+        if(!file.exists())
+        {
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
         if(file != null)
         {
             try {
@@ -106,6 +116,7 @@ public class ProfileFragment extends Fragment {
     {
         ipInfoFilePath = getContext().getFilesDir().getAbsolutePath() + "/ipInfo.dat";
         ip = fetchIpDataFromFile(ipInfoFilePath);
+        intialiseMiscLinks();
 
         LoadCard ld = new LoadCard();
         ld.execute(MiscOperations.get_profiles);
@@ -257,7 +268,7 @@ public class ProfileFragment extends Fragment {
     public void showServerDialog(String Message)
     {
 
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity(), R.style.Theme_AppCompat_Dialog_Alert);
         alertDialogBuilder.setMessage(Message);
 
         alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -265,7 +276,7 @@ public class ProfileFragment extends Fragment {
             public void onClick(DialogInterface dialog, int which) {
                 //Movies.writeIpData("192.168.0.4");
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.Theme_AppCompat_Dialog_Alert);
                 builder.setMessage("Enter Server's Local IP Address");
                 final EditText input = new EditText(getActivity());
                 input.setHint("IP Address");
