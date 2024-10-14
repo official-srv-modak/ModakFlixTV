@@ -20,7 +20,7 @@ import java.util.Set;
 
 public class MiscOperations {
 
-    public static String ip = "192.168.0.127", ipInfoFilePath = "";
+    public static String ip = "10.0.0.119", ipInfoFilePath = "";
 
     public static String position = "position", duration = "duration", title_index_show = "name";
     public static String username = "";
