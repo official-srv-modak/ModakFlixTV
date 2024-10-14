@@ -288,7 +288,7 @@ public class MainFragment extends BrowseSupportFragment {
         }
         else if(option.equalsIgnoreCase(getResources().getString(R.string.contact_us)))
         {
-            showContactUs("Developer - Sourav Modak\nContact Number - +91 9500166574\nE-Mail - official.srv.modak@gmail.com");
+            showContactUs("Developers - Sourav Modak, Bhavdeep Singh, Tisha Mogha, Mitali Sisodia\nContact Number - +1 437 602 9840\nE-Mail - official.srv.modak@gmail.com");
         }
 
     }
