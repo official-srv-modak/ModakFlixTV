@@ -1,6 +1,6 @@
-package com.example.modakflixtv;
+package com.souravmodak.modakflixtv;
 
-import static com.example.modakflixtv.MainFragment.NUM_COLS;
+import static com.souravmodak.modakflixtv.MainFragment.NUM_COLS;
 
 import org.json.JSONArray;
 import org.json.JSONException;

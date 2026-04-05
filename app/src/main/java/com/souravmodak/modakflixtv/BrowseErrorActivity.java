@@ -1,4 +1,4 @@
-package com.example.modakflixtv;
+package com.souravmodak.modakflixtv;
 
 import android.os.Bundle;
 import android.os.Handler;

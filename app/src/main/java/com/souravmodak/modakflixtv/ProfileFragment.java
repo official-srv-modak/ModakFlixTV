@@ -1,8 +1,8 @@
-package com.example.modakflixtv;
+package com.souravmodak.modakflixtv;
 
-import static com.example.modakflixtv.MiscOperations.intialiseMiscLinks;
-import static com.example.modakflixtv.MiscOperations.ipInfoFilePath;
-import static com.example.modakflixtv.MiscOperations.ip;
+import static com.souravmodak.modakflixtv.MiscOperations.intialiseMiscLinks;
+import static com.souravmodak.modakflixtv.MiscOperations.ipInfoFilePath;
+import static com.souravmodak.modakflixtv.MiscOperations.ip;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;

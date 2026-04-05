@@ -1,8 +1,8 @@
-package com.example.modakflixtv;
+package com.souravmodak.modakflixtv;
 
 import static android.app.Activity.RESULT_OK;
 
-import static com.example.modakflixtv.MiscOperations.ip;
+import static com.souravmodak.modakflixtv.MiscOperations.ip;
 
 import android.content.ActivityNotFoundException;
 import android.content.Context;

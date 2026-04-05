@@ -1,4 +1,4 @@
-package com.example.modakflixtv;
+package com.souravmodak.modakflixtv;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
